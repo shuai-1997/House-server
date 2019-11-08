@@ -17,7 +17,6 @@ const Houses = mongoose.model("houses",{
 	totalPrice:Number, // 总价格
 	unitPrice:Number ,  //单价
 	houseType:Array, //户型
-	
 	houseTypeImg:String,//户型图
 	type:String, //类型：写字楼，商铺 住宅
 	SellingTime:Date, //开售时间
@@ -58,6 +57,7 @@ const Houses = mongoose.model("houses",{
   	introduce:String,//评价
   	appellation:String,//称呼
   	downPayment:Number,//首付
+  	
   	time:{
   		type:Date,
   		default:new Date()
@@ -85,4 +85,18 @@ const Houses = mongoose.model("houses",{
   		default:new Date()
   	}
   });
- module.exports={City,Houses,House,resoldApartment,Let}
+  
+let admin =mongoose.model('admin',{
+		time:{
+			type:Date,
+			default:new Date()
+		},
+		userName:String,
+		pwd:String,
+	})
+//  let one=new  admin({
+//  	userName:'王小帅',
+//  	pwd:'123456789'
+//  })
+//  one.save()
+ module.exports={City,Houses,House,resoldApartment,Let,admin}

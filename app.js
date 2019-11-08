@@ -9,7 +9,7 @@ let server=new Koa();
 let Router=require('koa-router')
 var router=new Router()
 
-let {City,Houses,House,resoldApartment,Let}=require('./mongo')
+let {City,Houses,House,resoldApartment,Let,admin}=require('./mongo')
 
 let body=require("koa-body")
 server.use(body())
@@ -19,6 +19,25 @@ server.use(cors())
 
 let multer = require("koa-multer")
 
+//登录
+router.post("/admin",async (ctx,next)=>{
+	let web=ctx.request.body;
+	
+	let res=await admin.findOne({userName:web.userName})
+	if(res){
+		if(res.pwd==web.pwd){
+			ctx.body='登录成功'
+		}else{
+			ctx.body='密码错误'
+			
+		}
+	}else{
+		
+		ctx.body='用户不存在'
+	}
+	
+ 	
+ })
 
 //处理前段上传来的图片资源
 var storage = multer.diskStorage({
@@ -75,6 +94,57 @@ router.post("/filtrateLet",async (ctx,next)=>{
 	let data=await Let.find(res).skip((+query.current-1)*+query.size).limit(+query.size).sort(sort)
 	console.log(data)
  	ctx.body=data
+ })
+//二手房条件筛选
+router.post("/filtrateSecond",async (ctx,next)=>{
+	let res=ctx.request.body[0]
+	let query=ctx.request.body[1]
+	let sort=ctx.request.body[2]
+	console.log(res)
+	console.log(query)
+	let data=await resoldApartment.find(res).skip((+query.current-1)*+query.size).limit(+query.size).sort(sort)
+	console.log(data)
+ 	ctx.body=data
+ })
+//后台出租房
+router.get("/findLet",async (ctx,next)=>{
+	let res=ctx.query
+	console.log(res)
+	let data=await Let.find()
+	console.log(data)
+ 	ctx.body=data
+ })
+//删除出租房
+router.delete("/deleteLet",async (ctx,next)=>{
+	let _id=ctx.query._id
+	 let res=await Let.deleteOne({_id})
+		console.log(res)
+	if (res) {
+		ctx.body="删除成功"
+	} else{
+		ctx.body="删除失败"
+		
+	}
+ })
+//后台二手房
+router.get("/findSoldApartment",async (ctx,next)=>{
+	let res=ctx.query
+	console.log(res)
+	let data=await resoldApartment.find()
+	console.log(data)
+ 	ctx.body=data
+ })
+//删除出租房
+router.delete("/deleteSoldApartment",async (ctx,next)=>{
+	let _id=ctx.query._id
+	 let res=await resoldApartment.deleteOne({_id})
+		console.log(res)
+	if (res) {
+		ctx.body="删除成功"
+	} else{
+		ctx.body="删除失败"
+		
+	}
  })
  server.use(router.routes())
  server.listen(3000,err=>{
