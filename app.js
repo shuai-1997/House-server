@@ -9,7 +9,7 @@ let server=new Koa();
 let Router=require('koa-router')
 var router=new Router()
 
-let {City,Houses,House,resoldApartment,Let,admin}=require('./mongo')
+let {City,Houses,Housedetails,resoldApartment,Let,admin}=require('./mongo')
 
 let body=require("koa-body")
 server.use(body())
@@ -145,6 +145,45 @@ router.delete("/deleteSoldApartment",async (ctx,next)=>{
 		ctx.body="删除失败"
 		
 	}
+ })
+//添加楼盘
+router.post("/addhouse",async (ctx,next)=>{
+	let data=ctx.request.body
+	let one=await  new Houses(data)
+	one.save()
+	ctx.body=one._id
+ })
+//添加楼盘内的房屋信息
+router.post("/addhousedetails",async (ctx,next)=>{
+	let data=ctx.request.body
+	let one=await  new Housedetails(data)
+	one.save()
+	console.log(one)
+	ctx.body='添加成功，房屋'
+ })
+//后台查找楼盘
+router.get("/findhouse",async (ctx,next)=>{
+	let data=ctx.query
+	let one=await  Houses.find()
+	
+	console.log(one)
+	ctx.body=one
+ })
+//后台删除楼盘
+router.delete("/deletehouse",async (ctx,next)=>{
+	let data=ctx.query
+	let one=await  Houses.deleteOne(data)
+	
+	console.log(one)
+	ctx.body='删除成功'
+ })
+//后台查找新房
+router.get("/findhousedetails",async (ctx,next)=>{
+	let data=ctx.query
+	console.log(data)
+	let one=await  Housedetails.find(data)
+	console.log(one)
+	ctx.body=one
  })
  server.use(router.routes())
  server.listen(3000,err=>{

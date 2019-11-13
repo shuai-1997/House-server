@@ -10,32 +10,35 @@ mongoose.connect('mongodb://localhost/house',{ useNewUrlParser: true, useUnified
 //楼盘信息
 const Houses = mongoose.model("houses",{
 	name:String, //楼盘名
-    Area:String, //区域
     address:String,//楼盘地址
     SellingAddress:String, //销售部地址
     ageLimit:String,//产权年限
-	totalPrice:Number, // 总价格
-	unitPrice:Number ,  //单价
-	houseType:Array, //户型
-	houseTypeImg:String,//户型图
-	type:String, //类型：写字楼，商铺 住宅
+	
+	//houseType:String, //户型
+	//houseTypeImg:String,//户型图
+	//type:String, //类型：写字楼，商铺 住宅
 	SellingTime:Date, //开售时间
-	publicityImg:String,//宣传图
+	publicityImg:Array,//宣传图
 	contactTel:String,//联系方式
-    state:String, //销售状态
-    fitment:String, //装修状况
-    floorArea:String,//占地面积
+    //state:String,  //销售状态
+    floorArea:String, //占地面积
     coveredArea:String,//建筑面积
-    towerCount:String,//楼栋总数
+    towerCount:Number,//楼栋总数
     tenementCost:String,//物业费详情
     afforest:String//绿化率
   });
   //房子信息
-  const House = mongoose.model("house",{
+  const Housedetails = mongoose.model("Housedetails",{
+  	totalPrice:Number, // 总价格
+	unitPrice:Number ,  //单价
+  	Area:String, //区域
   	belongHousesID:String,//所属楼盘ID
-	belongHouses:String,//所属楼盘
+  	type:String, //类型：写字楼，商铺 住宅
+  	state:String,  //销售状态
+  	fitment:String,  //装修状况
 	acreage:Number, //面积
 	houseType:String, //户型
+	houseTypeImg:Array,//户型图
 	bedroomNum:Number, //卧室数量
 	
   });
@@ -99,4 +102,4 @@ let admin =mongoose.model('admin',{
 //  	pwd:'123456789'
 //  })
 //  one.save()
- module.exports={City,Houses,House,resoldApartment,Let,admin}
+ module.exports={City,Houses,Housedetails,resoldApartment,Let,admin}

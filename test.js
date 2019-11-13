@@ -33,4 +33,24 @@ mongoose.connect('mongodb://localhost/house',{ useNewUrlParser: true, useUnified
   	 console.log(a)
  	 console.log(one)
   }
- one()
+// one()
+ 
+// let test=mongoose.model("test2",{
+// 	obj:Object,
+// 	arr:Array
+// })s
+ let test=mongoose.model("test3",{
+ 	name:String
+ })
+// let two = new test({
+//name:"123455"
+// })
+// two.save()
+
+async function two3 () {
+	let two1= await test.find({name:{$regex:/12/}})
+	console.log(two1)
+}
+two3()
+
+
